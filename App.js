@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  Text,
+  // Text,
   Link,
   HStack,
   Center,
@@ -11,75 +11,74 @@ import {
   extendTheme,
   VStack,
   Box,
+  View,
+  TextArea,
+  Pressable,
+  Image, 
+  Button,
+  useDisclose,
+  Actionsheet,
+
 } from "native-base";
 import NativeBaseIcon from "./components/NativeBaseIcon";
-import { Platform } from "react-native";
+import { Platform,Text } from "react-native";
+import Card from "./components/Card";
 
-// Define the config
-const config = {
-  useSystemColorMode: false,
-  initialColorMode: "dark",
-};
-
-// extend the theme
-export const theme = extendTheme({ config });
 
 export default function App() {
+  const {
+    isOpen,
+    onOpen,
+    onClose
+  } = useDisclose();
   return (
-    <NativeBaseProvider>
-      <Center
-        _dark={{ bg: "blueGray.900" }}
-        _light={{ bg: "blueGray.50" }}
-        px={4}
-        flex={1}
-      >
-        <VStack space={5} alignItems="center">
-          <NativeBaseIcon />
-          <Heading size="lg">Welcome to NativeBase</Heading>
-          <HStack space={2} alignItems="center">
-            <Text>Edit</Text>
-            <Box
-              _web={{
-                _text: {
-                  fontFamily: "monospace",
-                  fontSize: "sm",
-                },
-              }}
-              px={2}
-              py={1}
-              _dark={{ bg: "blueGray.800" }}
-              _light={{ bg: "blueGray.200" }}
-            >
-              App.js
-            </Box>
-            <Text>and save to reload.</Text>
-          </HStack>
-          <Link href="https://docs.nativebase.io" isExternal>
-            <Text color="primary.500" underline fontSize={"xl"}>
-              Learn NativeBase
+    <NativeBaseProvider >
+       <Box bg="primary.600" py="4" my="40" mx="2" px="3" borderRadius="5" rounded="md" width={375} maxWidth="100%">
+        <HStack justifyContent="space-between" >
+          <Box justifyContent="space-between" >
+            <VStack space="2">
+              <Text fontSize="sm" color="white">
+                Today @ 9PM
+              </Text>
+              <Text color="white" fontSize="xl">
+                Let's talk about avatar!
+              </Text>
+            </VStack>
+            <Pressable rounded="xs" bg="primary.400" alignSelf="flex-start" py="1" px="3">
+              <Text textTransform="uppercase" fontSize="sm" fontWeight="bold" color="white">
+                Remind me
+              </Text>
+            </Pressable>
+          </Box>
+          <Image source={{
+          uri: 'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg'
+        }} alt="Aang flying and surrounded by clouds" height="100" rounded="full" width="100" />
+        </HStack>
+      </Box>
+<Card text="hello"/>
+      <Center>
+      <Button onPress={onOpen}>Actionsheet</Button>
+      <Actionsheet isOpen={isOpen} onClose={onClose}>
+        <Actionsheet.Content _dragIndicatorWrapper={{
+        bg: 'blue.500',
+        py: '4'
+      }}>
+          <Box w="100%" h={60} px={4} justifyContent="center">
+            <Text fontSize="16" color="gray.500" _dark={{
+            color: 'gray.300'
+          }}>
+              Albums
             </Text>
-          </Link>
-          <ToggleDarkMode />
-        </VStack>
-      </Center>
+          </Box>
+          <Actionsheet.Item>Delete</Actionsheet.Item>
+          <Actionsheet.Item>Share</Actionsheet.Item>
+          <Actionsheet.Item>Play</Actionsheet.Item>
+          <Actionsheet.Item>Favourite</Actionsheet.Item>
+          <Actionsheet.Item>Cancel</Actionsheet.Item>
+        </Actionsheet.Content>
+      </Actionsheet>
+    </Center>
     </NativeBaseProvider>
   );
 }
 
-// Color Switch Component
-function ToggleDarkMode() {
-  const { colorMode, toggleColorMode } = useColorMode();
-  return (
-    <HStack space={2} alignItems="center">
-      <Text>Dark</Text>
-      <Switch
-        isChecked={colorMode === "light"}
-        onToggle={toggleColorMode}
-        aria-label={
-          colorMode === "light" ? "switch to dark mode" : "switch to light mode"
-        }
-      />
-      <Text>Light</Text>
-    </HStack>
-  );
-}
